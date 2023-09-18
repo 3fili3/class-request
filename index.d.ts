@@ -11,7 +11,7 @@ declare module 'class-request' {
         ApiKey(apiKey: string): Https
         getRouterPrive(): string
         setAuthorization(auth: string): void
-        Builder<T>(functionError: (error: any) => void): Promise<T>
+        Builder<T>(functionError?: (error: any) => void): Promise<T>
         
     }
 }
