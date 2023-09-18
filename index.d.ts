@@ -10,7 +10,7 @@ declare module 'class-request' {
         Put(path: string, body: undefined | Object): Https
         ApiKey(apiKey: string): Https
         getRouterPrive(): string
-        setAuthorization(auth: string): void
+        static setAuthorization(auth: string): void
         Builder<T>(functionError?: (error: any) => void): Promise<T>
         
     }
