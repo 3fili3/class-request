@@ -78,16 +78,19 @@ class Https {
     Builder(functionError) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const auth = Https.Authorization != null ? Https.Authorization : this.Authorization;
                 const result = ((yield (0, axios_1.default)({
                     url: `${this.RouterPrivate}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
-                    headers: this.apiKey === '' ? { authorization: `Bearer ${this.Authorization}` } : { authorization: this.apiKey }
+                    headers: this.apiKey === '' ? { authorization: `Bearer ${auth}` } : { authorization: this.apiKey }
                 })).data).service;
                 return result;
             }
             catch (error) {
-                functionError(error);
+                if (functionError != undefined) {
+                    functionError(error);
+                }
                 throw (error);
             }
         });
