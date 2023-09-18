@@ -95,11 +95,12 @@ export class Https {
 
     public async Builder<T>(functionError?: (error: any) => void): Promise<T> {
         try {
+            const auth = Https.Authorization != null ? Https.Authorization: this.Authorization
             const result = ((await axios({
                 url: `${this.RouterPrivate}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
-                headers: this.apiKey === '' ? { authorization: `Bearer ${this.Authorization}` }:{ authorization: this.apiKey }
+                headers: this.apiKey === '' ? { authorization: `Bearer ${auth}` }:{ authorization: this.apiKey }
             })).data).service
 
             return result as T
