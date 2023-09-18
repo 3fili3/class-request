@@ -95,7 +95,6 @@ export class Https {
 
     public async Builder<T>(functionError?: (error: any) => void): Promise<T> {
         try {
-            console.log(Https.Authorization)
             const auth = Https.Authorization != null ? Https.Authorization: this.Authorization
             const result = ((await axios({
                 url: `${this.RouterPrivate}${this.Path}`,
