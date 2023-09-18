@@ -93,7 +93,7 @@ export class Https {
         
     }
 
-    public async Builder<T>(functionError: (error: any) => void): Promise<T> {
+    public async Builder<T>(functionError?: (error: any) => void): Promise<T> {
         try {
             const result = ((await axios({
                 url: `${this.RouterPrivate}${this.Path}`,
@@ -104,7 +104,9 @@ export class Https {
 
             return result as T
         } catch (error) {
-            functionError(error)
+            if(functionError != undefined) {
+                functionError(error)
+            }
             throw(error)
         }
     }
