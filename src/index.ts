@@ -1,5 +1,14 @@
 import axios from 'axios'
 
+export interface Error {
+    status: number;
+    message: String;
+}
+
+export interface ObsersableError {
+    getError(error: Error): void
+}
+
 export class Https {
     
     private RouterPrivate: string;
@@ -72,11 +81,19 @@ export class Https {
         return this
     }
 
+    public static setAuthorization(auth: string) {
+        Https.Authorization = auth
+    }
+
     public getRouterPrive(): string {
         return this.RouterPrivate
     }
 
-    public async Builder<T>(): Promise<T> {
+    public static Error() {
+        
+    }
+
+    public async Builder<T>(functionError: (error: any) => void): Promise<T> {
         try {
             const result = ((await axios({
                 url: `${this.RouterPrivate}${this.Path}`,
@@ -87,7 +104,8 @@ export class Https {
 
             return result as T
         } catch (error) {
-            throw({ message: error })
+            functionError(error)
+            throw(error)
         }
     }
 }

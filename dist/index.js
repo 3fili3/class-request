@@ -67,10 +67,15 @@ class Https {
         this.apiKey = apiKey;
         return this;
     }
+    static setAuthorization(auth) {
+        Https.Authorization = auth;
+    }
     getRouterPrive() {
         return this.RouterPrivate;
     }
-    Builder() {
+    static Error() {
+    }
+    Builder(functionError) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = ((yield (0, axios_1.default)({
@@ -82,7 +87,8 @@ class Https {
                 return result;
             }
             catch (error) {
-                throw ({ message: error });
+                functionError(error);
+                throw (error);
             }
         });
     }
