@@ -78,6 +78,7 @@ class Https {
     Builder(functionError) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log(Https.Authorization);
                 const auth = Https.Authorization != null ? Https.Authorization : this.Authorization;
                 const result = ((yield (0, axios_1.default)({
                     url: `${this.RouterPrivate}${this.Path}`,
