@@ -24,9 +24,6 @@ class Https {
         if (Https.RouterPrivateGlobal != undefined) {
             this.RouterPrivate = Https.RouterPrivateGlobal;
         }
-        if (Https.Authorization != '') {
-            this.Authorization = Https.Authorization;
-        }
         this.Path = '';
         this.Method = '';
         this.Body = null;
@@ -34,7 +31,7 @@ class Https {
     }
     static config(data) {
         this.RouterPrivateGlobal = data.router;
-        this.Authorization = data.auth != undefined ? data.auth : '';
+        Https.Authorization = data.auth != undefined ? data.auth : '';
     }
     Get(path) {
         this.Path = path;
@@ -78,7 +75,7 @@ class Https {
     Builder(functionError) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const auth = Https.Authorization != null ? Https.Authorization : this.Authorization;
+                const auth = Https.Authorization;
                 const result = ((yield (0, axios_1.default)({
                     url: `${this.RouterPrivate}${this.Path}`,
                     method: this.Method,

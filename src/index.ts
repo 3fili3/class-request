@@ -29,10 +29,6 @@ export class Https {
         if(Https.RouterPrivateGlobal != undefined) {
             this.RouterPrivate = Https.RouterPrivateGlobal
         }
-        if(Https.Authorization != '') {
-            this.Authorization = Https.Authorization
-        }
-
         this.Path = ''
         this.Method = ''
         this.Body = null as any
@@ -41,7 +37,7 @@ export class Https {
 
     public static config(data: { router: string, auth?: string }) {
         this.RouterPrivateGlobal = data.router
-        this.Authorization = data.auth != undefined ? data.auth:''
+        Https.Authorization = data.auth != undefined ? data.auth:''
     }
  
     public Get(path: string): Https {
@@ -95,7 +91,7 @@ export class Https {
 
     public async Builder<T>(functionError?: (error: any) => void): Promise<T> {
         try {
-            const auth = Https.Authorization != null ? Https.Authorization: this.Authorization
+            const auth = Https.Authorization
             const result = ((await axios({
                 url: `${this.RouterPrivate}${this.Path}`,
                 method: this.Method,
