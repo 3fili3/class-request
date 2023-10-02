@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosProgressEvent } from 'axios'
 
 export interface Error {
     status: number;
@@ -77,15 +77,23 @@ export class Https {
         
     }
 
-    public async Builder<T>(functionError?: (error: any) => void): Promise<T> {
+    public async Builder<T>(functionError?: (error: any) => void, functionsCalculeUpload?: (percentage: number) => void): Promise<T> {
         try {
             const auth = Https.Authorization
-            console.log(auth)
             const result = ((await axios({
                 url: `${Https.RouterPrivateGlobal}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
-                headers: this.apiKey === '' ? { authorization: `Bearer ${auth}` }:{ authorization: this.apiKey }
+                headers: this.apiKey === '' ? { authorization: `Bearer ${auth}` }:{ authorization: this.apiKey },
+                onUploadProgress: (event: AxiosProgressEvent ) => {
+                    const loaded = event.loaded;
+                    if(event.total != undefined) {
+                        const porcentLoading = Math.floor((loaded * 100) / event.total);
+                        if(functionsCalculeUpload != undefined) {
+                            functionsCalculeUpload(porcentLoading);
+                        }
+                    }
+                }
             })).data).service
 
             return result as T

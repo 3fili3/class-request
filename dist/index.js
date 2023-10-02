@@ -62,16 +62,24 @@ class Https {
     }
     static Error() {
     }
-    Builder(functionError) {
+    Builder(functionError, functionsCalculeUpload) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const auth = Https.Authorization;
-                console.log(auth);
                 const result = ((yield (0, axios_1.default)({
                     url: `${Https.RouterPrivateGlobal}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
-                    headers: this.apiKey === '' ? { authorization: `Bearer ${auth}` } : { authorization: this.apiKey }
+                    headers: this.apiKey === '' ? { authorization: `Bearer ${auth}` } : { authorization: this.apiKey },
+                    onUploadProgress: (event) => {
+                        const loaded = event.loaded;
+                        if (event.total != undefined) {
+                            const porcentLoading = Math.floor((loaded * 100) / event.total);
+                            if (functionsCalculeUpload != undefined) {
+                                functionsCalculeUpload(porcentLoading);
+                            }
+                        }
+                    }
                 })).data).service;
                 return result;
             }
