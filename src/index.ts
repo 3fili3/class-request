@@ -15,14 +15,13 @@ export class Https {
     private Path: string;
     private Method: string;
     private Body: Object;
-    private Authorization: string
     private static Authorization: string
     private apiKey: string
     private static RouterPrivateGlobal: string;
 
     public constructor(routerPrive?: string) {
-        this.RouterPrivate = 'https://clicko.com.mx/storage/v1/'
-        this.Authorization = ''
+        this.RouterPrivate = ''
+        Https.Authorization = ''
         if(routerPrive != undefined) {
             this.RouterPrivate = routerPrive
         }
@@ -64,11 +63,6 @@ export class Https {
         this.Path = path
         this.Body = body as Object
         this.Method = 'DELETE'
-        return this
-    }
-
-    public Auth(auth: string): Https {
-        this.Authorization = auth
         return this
     }
 

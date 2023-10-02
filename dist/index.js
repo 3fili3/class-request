@@ -16,8 +16,8 @@ exports.Https = void 0;
 const axios_1 = __importDefault(require("axios"));
 class Https {
     constructor(routerPrive) {
-        this.RouterPrivate = 'https://clicko.com.mx/storage/v1/';
-        this.Authorization = '';
+        this.RouterPrivate = '';
+        Https.Authorization = '';
         if (routerPrive != undefined) {
             this.RouterPrivate = routerPrive;
         }
@@ -54,10 +54,6 @@ class Https {
         this.Path = path;
         this.Body = body;
         this.Method = 'DELETE';
-        return this;
-    }
-    Auth(auth) {
-        this.Authorization = auth;
         return this;
     }
     ApiKey(apiKey) {
