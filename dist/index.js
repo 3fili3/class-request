@@ -16,21 +16,15 @@ exports.Https = void 0;
 const axios_1 = __importDefault(require("axios"));
 class Https {
     constructor(routerPrive) {
-        this.RouterPrivate = '';
+        this.RouterPrivate = routerPrive;
         Https.Authorization = '';
-        if (routerPrive != undefined) {
-            this.RouterPrivate = routerPrive;
-        }
-        if (Https.RouterPrivateGlobal != undefined) {
-            this.RouterPrivate = Https.RouterPrivateGlobal;
-        }
         this.Path = '';
         this.Method = '';
         this.Body = null;
         this.apiKey = '';
     }
     static config(data) {
-        this.RouterPrivateGlobal = data.router;
+        Https.RouterPrivateGlobal = data.router;
         Https.Authorization = data.auth != undefined ? data.auth : '';
     }
     Get(path) {
@@ -73,7 +67,7 @@ class Https {
             try {
                 const auth = Https.Authorization;
                 const result = ((yield (0, axios_1.default)({
-                    url: `${this.RouterPrivate}${this.Path}`,
+                    url: `${Https.RouterPrivateGlobal}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
                     headers: this.apiKey === '' ? { authorization: `Bearer ${auth}` } : { authorization: this.apiKey }

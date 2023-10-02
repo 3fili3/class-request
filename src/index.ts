@@ -20,14 +20,8 @@ export class Https {
     private static RouterPrivateGlobal: string;
 
     public constructor(routerPrive?: string) {
-        this.RouterPrivate = ''
+        this.RouterPrivate = routerPrive as string
         Https.Authorization = ''
-        if(routerPrive != undefined) {
-            this.RouterPrivate = routerPrive
-        }
-        if(Https.RouterPrivateGlobal != undefined) {
-            this.RouterPrivate = Https.RouterPrivateGlobal
-        }
         this.Path = ''
         this.Method = ''
         this.Body = null as any
@@ -35,7 +29,7 @@ export class Https {
     }
 
     public static config(data: { router: string, auth?: string }) {
-        this.RouterPrivateGlobal = data.router
+        Https.RouterPrivateGlobal = data.router
         Https.Authorization = data.auth != undefined ? data.auth:''
     }
  
@@ -87,7 +81,7 @@ export class Https {
         try {
             const auth = Https.Authorization
             const result = ((await axios({
-                url: `${this.RouterPrivate}${this.Path}`,
+                url: `${Https.RouterPrivateGlobal}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
                 headers: this.apiKey === '' ? { authorization: `Bearer ${auth}` }:{ authorization: this.apiKey }
