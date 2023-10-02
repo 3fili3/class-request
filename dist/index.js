@@ -66,6 +66,7 @@ class Https {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const auth = Https.Authorization;
+                console.log(auth);
                 const result = ((yield (0, axios_1.default)({
                     url: `${Https.RouterPrivateGlobal}${this.Path}`,
                     method: this.Method,

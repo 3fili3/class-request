@@ -80,6 +80,7 @@ export class Https {
     public async Builder<T>(functionError?: (error: any) => void): Promise<T> {
         try {
             const auth = Https.Authorization
+            console.log(auth)
             const result = ((await axios({
                 url: `${Https.RouterPrivateGlobal}${this.Path}`,
                 method: this.Method,
