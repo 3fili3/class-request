@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosProgressEvent } from 'axios'
 
 export interface Error {
     status: number;
@@ -15,24 +15,13 @@ export class Https {
     private Path: string;
     private Method: string;
     private Body: Object;
-    private Authorization: string
     private static Authorization: string
     private static apiKey: string
     private static RouterPrivateGlobal: string;
 
     public constructor(routerPrive?: string) {
-        this.RouterPrivate = ''
-        this.Authorization = ''
-        if(routerPrive != undefined) {
-            this.RouterPrivate = routerPrive
-        }
-        if(Https.RouterPrivateGlobal != undefined) {
-            this.RouterPrivate = Https.RouterPrivateGlobal
-        }
-        if(Https.Authorization != '') {
-            this.Authorization = Https.Authorization
-        }
-
+        this.RouterPrivate = routerPrive as string
+        Https.Authorization = ''
         this.Path = ''
         this.Method = ''
         this.Body = null as any
@@ -72,7 +61,7 @@ export class Https {
     }
 
     public Auth(auth: string): Https {
-        this.Authorization = auth
+        Https.Authorization = auth
         return this
     }
 
@@ -88,10 +77,15 @@ export class Https {
         return this.RouterPrivate
     }
 
-    public async Builder<T>(functionError?: (error: any) => void): Promise<T> {
+    public static Error() {
+        
+    }
+
+    public async Builder<T>(functionError?: (error: any) => void, functionsCalculeUpload?: (percentage: number) => void): Promise<T> {
         try {
+            const auth = Https.Authorization
             const result = ((await axios({
-                url: `${this.RouterPrivate}${this.Path}`,
+                url: `${Https.RouterPrivateGlobal}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
                 headers: Https.Authorization === '' ? { authorization: `Bearer ${Https.Authorization}` }:{ authorization:  Https.apiKey }

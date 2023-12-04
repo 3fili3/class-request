@@ -16,17 +16,8 @@ exports.Https = void 0;
 const axios_1 = __importDefault(require("axios"));
 class Https {
     constructor(routerPrive) {
-        this.RouterPrivate = '';
-        this.Authorization = '';
-        if (routerPrive != undefined) {
-            this.RouterPrivate = routerPrive;
-        }
-        if (Https.RouterPrivateGlobal != undefined) {
-            this.RouterPrivate = Https.RouterPrivateGlobal;
-        }
-        if (Https.Authorization != '') {
-            this.Authorization = Https.Authorization;
-        }
+        this.RouterPrivate = routerPrive;
+        Https.Authorization = '';
         this.Path = '';
         this.Method = '';
         this.Body = null;
@@ -60,7 +51,7 @@ class Https {
         return this;
     }
     Auth(auth) {
-        this.Authorization = auth;
+        Https.Authorization = auth;
         return this;
     }
     static ApiKey(apiKey) {
@@ -72,11 +63,14 @@ class Https {
     getRouterPrive() {
         return this.RouterPrivate;
     }
-    Builder(functionError) {
+    static Error() {
+    }
+    Builder(functionError, functionsCalculeUpload) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const auth = Https.Authorization;
                 const result = ((yield (0, axios_1.default)({
-                    url: `${this.RouterPrivate}${this.Path}`,
+                    url: `${Https.RouterPrivateGlobal}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
                     headers: Https.Authorization === '' ? { authorization: `Bearer ${Https.Authorization}` } : { authorization: Https.apiKey }
