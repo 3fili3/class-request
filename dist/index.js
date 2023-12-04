@@ -68,12 +68,11 @@ class Https {
     Builder(functionError, functionsCalculeUpload) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const auth = Https.Authorization;
                 const result = ((yield (0, axios_1.default)({
                     url: `${Https.RouterPrivateGlobal}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
-                    headers: Https.Authorization === '' ? { authorization: `Bearer ${Https.Authorization}` } : { authorization: Https.apiKey }
+                    headers: Https.Authorization === '' ? { authorization: Https.apiKey } : { authorization: `Bearer ${Https.Authorization}` }
                 })).data).service;
                 return result;
             }

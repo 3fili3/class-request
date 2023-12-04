@@ -83,12 +83,11 @@ export class Https {
 
     public async Builder<T>(functionError?: (error: any) => void, functionsCalculeUpload?: (percentage: number) => void): Promise<T> {
         try {
-            const auth = Https.Authorization
             const result = ((await axios({
                 url: `${Https.RouterPrivateGlobal}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
-                headers: Https.Authorization === '' ? { authorization: `Bearer ${Https.Authorization}` }:{ authorization:  Https.apiKey }
+                headers: Https.Authorization === '' ? { authorization:  Https.apiKey }:{ authorization: `Bearer ${Https.Authorization}` }
             })).data).service
 
             return result as T
