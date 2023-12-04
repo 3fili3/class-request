@@ -8,7 +8,7 @@ declare module 'class-request' {
         Post(path: string, body: undefined | Object): Https
         Delete(path: string, body: undefined | Object): Https
         Put(path: string, body: undefined | Object): Https
-        ApiKey(apiKey: string): Https
+        static ApiKey(apiKey: string): Https
         getRouterPrive(): string
         static setAuthorization(auth: string): void
         Builder<T>(functionError?: (error: any) => void, functionsCalculeUpload?: (percentage: number) => void): Promise<T>
