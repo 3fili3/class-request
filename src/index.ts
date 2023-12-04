@@ -65,7 +65,7 @@ export class Https {
         return this
     }
 
-    public static ApiKey(apiKey: string) {
+    public ApiKey(apiKey: string) {
         Https.apiKey = apiKey
     }
 
