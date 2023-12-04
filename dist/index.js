@@ -16,7 +16,7 @@ exports.Https = void 0;
 const axios_1 = __importDefault(require("axios"));
 class Https {
     constructor(routerPrive) {
-        this.RouterPrivate = 'https://clicko.com.mx/storage/v1/';
+        this.RouterPrivate = '';
         this.Authorization = '';
         if (routerPrive != undefined) {
             this.RouterPrivate = routerPrive;
@@ -30,11 +30,11 @@ class Https {
         this.Path = '';
         this.Method = '';
         this.Body = null;
-        this.apiKey = '';
+        Https.apiKey = '';
     }
     static config(data) {
-        this.RouterPrivateGlobal = data.router;
-        this.Authorization = data.auth != undefined ? data.auth : '';
+        Https.RouterPrivateGlobal = data.router;
+        Https.Authorization = data.auth != undefined ? data.auth : '';
     }
     Get(path) {
         this.Path = path;
@@ -63,9 +63,8 @@ class Https {
         this.Authorization = auth;
         return this;
     }
-    ApiKey(apiKey) {
-        this.apiKey = apiKey;
-        return this;
+    static ApiKey(apiKey) {
+        Https.apiKey = apiKey;
     }
     static setAuthorization(auth) {
         Https.Authorization = auth;
@@ -73,17 +72,14 @@ class Https {
     getRouterPrive() {
         return this.RouterPrivate;
     }
-    static Error() {
-    }
     Builder(functionError) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const auth = Https.Authorization != null ? Https.Authorization : this.Authorization;
                 const result = ((yield (0, axios_1.default)({
                     url: `${this.RouterPrivate}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
-                    headers: this.apiKey === '' ? { authorization: `Bearer ${auth}` } : { authorization: this.apiKey }
+                    headers: Https.Authorization === '' ? { authorization: `Bearer ${Https.Authorization}` } : { authorization: Https.apiKey }
                 })).data).service;
                 return result;
             }

@@ -17,11 +17,11 @@ export class Https {
     private Body: Object;
     private Authorization: string
     private static Authorization: string
-    private apiKey: string
+    private static apiKey: string
     private static RouterPrivateGlobal: string;
 
     public constructor(routerPrive?: string) {
-        this.RouterPrivate = 'https://clicko.com.mx/storage/v1/'
+        this.RouterPrivate = ''
         this.Authorization = ''
         if(routerPrive != undefined) {
             this.RouterPrivate = routerPrive
@@ -36,12 +36,12 @@ export class Https {
         this.Path = ''
         this.Method = ''
         this.Body = null as any
-        this.apiKey = ''
+        Https.apiKey = ''
     }
 
     public static config(data: { router: string, auth?: string }) {
-        this.RouterPrivateGlobal = data.router
-        this.Authorization = data.auth != undefined ? data.auth:''
+        Https.RouterPrivateGlobal = data.router
+        Https.Authorization = data.auth != undefined ? data.auth:''
     }
  
     public Get(path: string): Https {
@@ -76,9 +76,8 @@ export class Https {
         return this
     }
 
-    public ApiKey(apiKey: string): Https {
-        this.apiKey = apiKey
-        return this
+    public static ApiKey(apiKey: string) {
+        Https.apiKey = apiKey
     }
 
     public static setAuthorization(auth: string) {
@@ -89,18 +88,13 @@ export class Https {
         return this.RouterPrivate
     }
 
-    public static Error() {
-        
-    }
-
     public async Builder<T>(functionError?: (error: any) => void): Promise<T> {
         try {
-            const auth = Https.Authorization != null ? Https.Authorization: this.Authorization
             const result = ((await axios({
                 url: `${this.RouterPrivate}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
-                headers: this.apiKey === '' ? { authorization: `Bearer ${auth}` }:{ authorization: this.apiKey }
+                headers: Https.Authorization === '' ? { authorization: `Bearer ${Https.Authorization}` }:{ authorization:  Https.apiKey }
             })).data).service
 
             return result as T
