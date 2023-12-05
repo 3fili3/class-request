@@ -21,7 +21,7 @@ class Https {
         this.Path = '';
         this.Method = '';
         this.Body = null;
-        Https.apiKey = '';
+        this.apiKey = '';
     }
     static config(data) {
         Https.RouterPrivateGlobal = data.router;
@@ -54,8 +54,8 @@ class Https {
         Https.Authorization = auth;
         return this;
     }
-    static ApiKey(apiKey) {
-        Https.apiKey = apiKey;
+    ApiKey(apiKey) {
+        this.apiKey = apiKey;
     }
     static setAuthorization(auth) {
         Https.Authorization = auth;
@@ -72,7 +72,7 @@ class Https {
                     url: `${Https.RouterPrivateGlobal}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
-                    headers: Https.Authorization === '' ? { authorization: Https.apiKey } : { authorization: `Bearer ${Https.Authorization}` }
+                    headers: Https.Authorization === '' ? { authorization: this.apiKey } : { authorization: `Bearer ${Https.Authorization}` }
                 })).data).service;
                 return result;
             }

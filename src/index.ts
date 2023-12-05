@@ -16,7 +16,7 @@ export class Https {
     private Method: string;
     private Body: Object;
     private static Authorization: string
-    private static apiKey: string
+    private apiKey: string
     private static RouterPrivateGlobal: string;
 
     public constructor(routerPrive?: string) {
@@ -25,7 +25,7 @@ export class Https {
         this.Path = ''
         this.Method = ''
         this.Body = null as any
-        Https.apiKey = ''
+        this.apiKey = ''
     }
 
     public static config(data: { router: string, auth?: string }) {
@@ -66,7 +66,7 @@ export class Https {
     }
 
     public ApiKey(apiKey: string) {
-        Https.apiKey = apiKey
+        this.apiKey = apiKey
     }
 
     public static setAuthorization(auth: string) {
@@ -87,7 +87,7 @@ export class Https {
                 url: `${Https.RouterPrivateGlobal}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
-                headers: Https.Authorization === '' ? { authorization:  Https.apiKey }:{ authorization: `Bearer ${Https.Authorization}` }
+                headers: Https.Authorization === '' ? { authorization: this.apiKey }:{ authorization: `Bearer ${Https.Authorization}` }
             })).data).service
 
             return result as T
