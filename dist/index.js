@@ -17,70 +17,78 @@ const axios_1 = __importDefault(require("axios"));
 class Https {
     constructor(routerPrive) {
         this.RouterPrivate = routerPrive;
-        Https.Authorization = '';
         this.Path = '';
         this.Method = '';
         this.Body = null;
-        this.apiKey = '';
     }
     static config(data) {
         Https.RouterPrivateGlobal = data.router;
-        Https.Authorization = data.auth != undefined ? data.auth : '';
+        if (data.auth != undefined) {
+            Https.Authorization = data.auth;
+        }
     }
-    Get(path) {
-        this.Path = path;
-        this.Method = 'GET';
-        return this;
+    Get(path, functionsCalculeUpload, messageSuccess, messageErrorServer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Path = path;
+            this.Method = 'GET';
+            return yield this.Builder(functionsCalculeUpload, messageSuccess, messageErrorServer);
+        });
     }
-    Post(path, body) {
-        this.Path = path;
-        this.Body = body;
-        this.Method = 'POST';
-        return this;
+    Post(path, body, functionsCalculeUpload, messageSuccess, messageErrorServer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Path = path;
+            this.Body = body;
+            this.Method = 'POST';
+            return yield this.Builder(functionsCalculeUpload, messageSuccess, messageErrorServer);
+        });
     }
-    Put(path, body) {
-        this.Path = path;
-        this.Body = body;
-        this.Method = 'PUT';
-        return this;
+    Put(path, body, functionsCalculeUpload, messageSuccess, messageErrorServer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Path = path;
+            this.Body = body;
+            this.Method = 'PUT';
+            return yield this.Builder(functionsCalculeUpload, messageSuccess, messageErrorServer);
+        });
     }
-    Delete(path, body) {
-        this.Path = path;
-        this.Body = body;
-        this.Method = 'DELETE';
-        return this;
-    }
-    Auth(auth) {
-        Https.Authorization = auth;
-        return this;
-    }
-    ApiKey(apiKey) {
-        this.apiKey = apiKey;
-    }
-    static setAuthorization(auth) {
-        Https.Authorization = auth;
+    Delete(path, body, functionsCalculeUpload, messageSuccess, messageErrorServer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Path = path;
+            this.Body = body;
+            this.Method = 'DELETE';
+            return yield this.Builder(functionsCalculeUpload, messageSuccess, messageErrorServer);
+        });
     }
     getRouterPrive() {
         return this.RouterPrivate;
     }
-    static Error() {
-    }
-    Builder(functionError, functionsCalculeUpload) {
+    Builder(functionsCalculeUpload, messageErrorSuccess, messageErrorServer) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const token = Https.Authorization();
                 const result = ((yield (0, axios_1.default)({
                     url: `${Https.RouterPrivateGlobal}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
-                    headers: Https.Authorization === '' ? { authorization: this.apiKey } : { authorization: `Bearer ${Https.Authorization}` }
+                    headers: { authorization: token }
                 })).data).service;
                 return result;
             }
             catch (error) {
-                if (functionError != undefined) {
-                    functionError(error);
+                const errorTemp = error;
+                const MessageErrorSuccess = { message: errorTemp.response.data.message, status: errorTemp.response.data.status };
+                if (errorTemp.response.data.status === 200) {
+                    if (messageErrorSuccess != undefined) {
+                        messageErrorSuccess(MessageErrorSuccess);
+                        throw (MessageErrorSuccess);
+                    }
                 }
-                throw (error);
+                else {
+                    if (messageErrorServer != undefined) {
+                        messageErrorServer(MessageErrorSuccess);
+                        throw (MessageErrorSuccess);
+                    }
+                }
+                throw (MessageErrorSuccess);
             }
         });
     }
