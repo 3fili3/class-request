@@ -26,42 +26,45 @@ class Https {
         if (data.auth != undefined) {
             Https.Authorization = data.auth;
         }
+        if (data.functionError != undefined) {
+            this.FunctionMessageError = data.functionError;
+        }
     }
-    Get(path, functionsCalculeUpload, messageSuccess, messageErrorServer) {
+    Get(path, messageSuccess, functionsCalculeUpload) {
         return __awaiter(this, void 0, void 0, function* () {
             this.Path = path;
             this.Method = 'GET';
-            return yield this.Builder(functionsCalculeUpload, messageSuccess, messageErrorServer);
+            return yield this.Builder(messageSuccess, functionsCalculeUpload);
         });
     }
-    Post(path, body, functionsCalculeUpload, messageSuccess, messageErrorServer) {
+    Post(path, body, messageSuccess, functionsCalculeUpload) {
         return __awaiter(this, void 0, void 0, function* () {
             this.Path = path;
             this.Body = body;
             this.Method = 'POST';
-            return yield this.Builder(functionsCalculeUpload, messageSuccess, messageErrorServer);
+            return yield this.Builder(messageSuccess, functionsCalculeUpload);
         });
     }
-    Put(path, body, functionsCalculeUpload, messageSuccess, messageErrorServer) {
+    Put(path, body, messageSuccess, functionsCalculeUpload) {
         return __awaiter(this, void 0, void 0, function* () {
             this.Path = path;
             this.Body = body;
             this.Method = 'PUT';
-            return yield this.Builder(functionsCalculeUpload, messageSuccess, messageErrorServer);
+            return yield this.Builder(messageSuccess, functionsCalculeUpload);
         });
     }
-    Delete(path, body, functionsCalculeUpload, messageSuccess, messageErrorServer) {
+    Delete(path, body, messageSuccess, functionsCalculeUpload) {
         return __awaiter(this, void 0, void 0, function* () {
             this.Path = path;
             this.Body = body;
             this.Method = 'DELETE';
-            return yield this.Builder(functionsCalculeUpload, messageSuccess, messageErrorServer);
+            return yield this.Builder(messageSuccess, functionsCalculeUpload);
         });
     }
     getRouterPrive() {
         return this.RouterPrivate;
     }
-    Builder(functionsCalculeUpload, messageErrorSuccess, messageErrorServer) {
+    Builder(messageErrorSuccess, functionsCalculeUpload) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const token = Https.Authorization();
@@ -83,9 +86,8 @@ class Https {
                     }
                 }
                 else {
-                    if (messageErrorServer != undefined) {
-                        messageErrorServer(MessageErrorSuccess);
-                        throw (MessageErrorSuccess);
+                    if (Https.FunctionMessageError != undefined) {
+                        Https.FunctionMessageError(MessageErrorSuccess);
                     }
                 }
                 throw (MessageErrorSuccess);
