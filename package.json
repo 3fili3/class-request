@@ -2,7 +2,7 @@
   "name": "class-request",
   "version": "1.0.0",
   "description": "Library for drive api request",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "files": [
     "dist",
     "index.d.ts"
