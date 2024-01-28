@@ -66,10 +66,11 @@ class Https {
     }
     Builder(messageErrorSuccess, functionsCalculeUpload) {
         return __awaiter(this, void 0, void 0, function* () {
+            const pathServer = this.RouterPrivate === undefined ? Https.RouterPrivateGlobal : this.RouterPrivate;
             try {
                 const token = Https.Authorization();
                 const result = ((yield (0, axios_1.default)({
-                    url: `${Https.RouterPrivateGlobal}${this.Path}`,
+                    url: `${pathServer}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
                     headers: { authorization: token }

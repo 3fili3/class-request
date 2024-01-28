@@ -73,10 +73,11 @@ export class Https {
         messageErrorSuccess?: (error: tMessageErrorSuccess) => void,
         functionsCalculeUpload?: (percentage: number) => void
     ): Promise<T> {
+        const pathServer = this.RouterPrivate === undefined ? Https.RouterPrivateGlobal:this.RouterPrivate
         try {
             const token = Https.Authorization()
             const result = ((await axios({
-                url: `${Https.RouterPrivateGlobal}${this.Path}`,
+                url: `${pathServer}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
                 headers: { authorization: token }
