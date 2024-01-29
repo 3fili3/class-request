@@ -87,6 +87,8 @@ export class Https {
 
         } catch (error) {
 
+            console.log(error)
+
             const errorTemp: { response: { data: { status: number, message: string }} } = error as { response: { data: { status: number, message: string }} }
             const MessageErrorSuccess = { message: errorTemp.response.data.message, status: errorTemp.response.data.status } as tMessageErrorSuccess
 
@@ -94,7 +96,6 @@ export class Https {
                 
                 if(messageErrorSuccess != undefined) {
                     messageErrorSuccess(MessageErrorSuccess)
-                    throw(MessageErrorSuccess)
                 }
             } else {
                 if(Https.FunctionMessageError != undefined) {

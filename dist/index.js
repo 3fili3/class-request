@@ -78,12 +78,12 @@ class Https {
                 return result;
             }
             catch (error) {
+                console.log(error);
                 const errorTemp = error;
                 const MessageErrorSuccess = { message: errorTemp.response.data.message, status: errorTemp.response.data.status };
                 if (errorTemp.response.data.status === 200) {
                     if (messageErrorSuccess != undefined) {
                         messageErrorSuccess(MessageErrorSuccess);
-                        throw (MessageErrorSuccess);
                     }
                 }
                 else {
