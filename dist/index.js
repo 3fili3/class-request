@@ -69,28 +69,25 @@ class Https {
             const pathServer = this.RouterPrivate === undefined ? Https.RouterPrivateGlobal : this.RouterPrivate;
             try {
                 const token = Https.Authorization();
-                const result = yield (0, axios_1.default)({
+                const result = (yield (0, axios_1.default)({
                     url: `${pathServer}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
                     headers: { authorization: token }
-                });
-                console.log(result);
-                return result.data.service;
+                })).data;
+                if (!result.hasOwnProperty('service')) {
+                    if (messageErrorSuccess != undefined) {
+                        messageErrorSuccess(result);
+                    }
+                }
+                return result.service;
             }
             catch (error) {
                 console.log(error);
                 const errorTemp = error;
                 const MessageErrorSuccess = { message: errorTemp.response.data.message, status: errorTemp.response.data.status };
-                if (errorTemp.response.data.status === 200) {
-                    if (messageErrorSuccess != undefined) {
-                        messageErrorSuccess(MessageErrorSuccess);
-                    }
-                }
-                else {
-                    if (Https.FunctionMessageError != undefined) {
-                        Https.FunctionMessageError(MessageErrorSuccess);
-                    }
+                if (Https.FunctionMessageError != undefined) {
+                    Https.FunctionMessageError(MessageErrorSuccess);
                 }
                 throw (MessageErrorSuccess);
             }

@@ -76,16 +76,20 @@ export class Https {
         const pathServer = this.RouterPrivate === undefined ? Https.RouterPrivateGlobal:this.RouterPrivate
         try {
             const token = Https.Authorization()
-            const result = await axios({
+            const result = (await axios({
                 url: `${pathServer}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
                 headers: { authorization: token }
-            })
+            })).data
 
-            console.log(result)
-
-            return result.data.service as T
+            if(!result.hasOwnProperty('service')) {
+                if(messageErrorSuccess != undefined) {
+                    messageErrorSuccess(result)
+                }
+            }
+            
+            return result.service as T
 
         } catch (error) {
 
@@ -94,15 +98,8 @@ export class Https {
             const errorTemp: { response: { data: { status: number, message: string }} } = error as { response: { data: { status: number, message: string }} }
             const MessageErrorSuccess = { message: errorTemp.response.data.message, status: errorTemp.response.data.status } as tMessageErrorSuccess
 
-            if(errorTemp.response.data.status === 200) {
-                
-                if(messageErrorSuccess != undefined) {
-                    messageErrorSuccess(MessageErrorSuccess)
-                }
-            } else {
-                if(Https.FunctionMessageError != undefined) {
-                    Https.FunctionMessageError(MessageErrorSuccess as MessageError)
-                }
+            if(Https.FunctionMessageError != undefined) {
+                Https.FunctionMessageError(MessageErrorSuccess as MessageError)
             }
 
             throw(MessageErrorSuccess)
