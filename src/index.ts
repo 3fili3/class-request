@@ -80,7 +80,7 @@ export class Https {
                 url: `${pathServer}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
-                headers: { authorization: token }
+                headers: { authorization: `Bearer ${token}` }
             })).data
 
             if(!result.hasOwnProperty('service')) {
