@@ -76,14 +76,16 @@ export class Https {
         const pathServer = this.RouterPrivate === undefined ? Https.RouterPrivateGlobal:this.RouterPrivate
         try {
             const token = Https.Authorization()
-            const result = ((await axios({
+            const result = await axios({
                 url: `${pathServer}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
                 headers: { authorization: token }
-            })).data).service
+            })
 
-            return result as T
+            console.log(result)
+
+            return result.data.service as T
 
         } catch (error) {
 

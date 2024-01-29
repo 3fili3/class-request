@@ -69,13 +69,14 @@ class Https {
             const pathServer = this.RouterPrivate === undefined ? Https.RouterPrivateGlobal : this.RouterPrivate;
             try {
                 const token = Https.Authorization();
-                const result = ((yield (0, axios_1.default)({
+                const result = yield (0, axios_1.default)({
                     url: `${pathServer}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
                     headers: { authorization: token }
-                })).data).service;
-                return result;
+                });
+                console.log(result);
+                return result.data.service;
             }
             catch (error) {
                 console.log(error);
