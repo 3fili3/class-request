@@ -5,7 +5,7 @@ declare module 'class-request' {
     export class Https {
 
         constructor(routerPrive?: string);
-        static config(data: { router: string; auth?: (() => string) | undefined; functionError: (messageError: MessageError) => void; headers?: Object | undefined; }): void
+        static config(data: { router: string; auth?: (() => string) | undefined; functionError: (messageError: MessageError) => void; headers?: () => Object });
         Get<G, gMessageSuccess>(path: string, messageSuccess?: ((error: gMessageSuccess) => void) | undefined, functionsCalculeUpload?: ((percentage: number) => void) | undefined): Promise<G>
         Post<P, pMessageSuccess>(path: string, body: undefined | Object, messageSuccess?: ((error: pMessageSuccess) => void) | undefined, functionsCalculeUpload?: ((percentage: number) => void) | undefined): Promise<P>
         Delete<D, dMessageSuccess>(path: string, body: undefined | Object, messageSuccess?: ((error: dMessageSuccess) => void) | undefined, functionsCalculeUpload?: ((percentage: number) => void) | undefined): Promise<D>
