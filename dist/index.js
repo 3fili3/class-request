@@ -74,7 +74,6 @@ class Https {
             if (Https.Headers != undefined) {
                 otherHeaders = Https.Headers();
             }
-            console.log(otherHeaders);
             try {
                 const token = Https.Authorization();
                 const result = (yield (0, axios_1.default)({

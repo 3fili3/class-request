@@ -86,7 +86,6 @@ export class Https {
             otherHeaders = Https.Headers()
         }
 
-        console.log(otherHeaders)
         try {
             const token = Https.Authorization()
             const result = (await axios({
