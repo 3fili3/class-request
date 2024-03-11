@@ -20,6 +20,7 @@ export class Https {
     private static Authorization: () => string
     private static RouterPrivateGlobal: string;
     private static FunctionMessageError: (messageError: MessageError) => void
+    private static Headers: Object = null as any
 
     public constructor(routerPrive?: string) {
         this.RouterPrivate = routerPrive as string
@@ -28,13 +29,17 @@ export class Https {
         this.Body = null as any
     }
 
-    public static config(data: { router: string, auth?: () => string, functionError: (messageError: MessageError) => void }) {
+    public static config(data: { router: string, auth?: () => string, functionError: (messageError: MessageError) => void, headers?: Object }) {
         Https.RouterPrivateGlobal = data.router
         if(data.auth != undefined) {
             Https.Authorization = data.auth
         }
         if(data.functionError != undefined) {
             this.FunctionMessageError = data.functionError
+        }
+
+        if(data.headers != undefined) {
+            Https.Headers = data.headers
         }
     }
  
@@ -80,7 +85,10 @@ export class Https {
                 url: `${pathServer}${this.Path}`,
                 method: this.Method,
                 data: this.Body,
-                headers: { authorization: `Bearer ${token}` }
+                headers: { 
+                    authorization: `Bearer ${token}`,
+                    ... Https.Headers === null ? {}: Https.Headers as {}
+                 }
             })).data
 
             if(!result.hasOwnProperty('service')) {

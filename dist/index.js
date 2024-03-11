@@ -29,6 +29,9 @@ class Https {
         if (data.functionError != undefined) {
             this.FunctionMessageError = data.functionError;
         }
+        if (data.headers != undefined) {
+            Https.Headers = data.headers;
+        }
     }
     Get(path, messageSuccess, functionsCalculeUpload) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -73,7 +76,7 @@ class Https {
                     url: `${pathServer}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
-                    headers: { authorization: `Bearer ${token}` }
+                    headers: Object.assign({ authorization: `Bearer ${token}` }, Https.Headers === null ? {} : Https.Headers)
                 })).data;
                 if (!result.hasOwnProperty('service')) {
                     if (messageErrorSuccess != undefined) {
@@ -95,3 +98,4 @@ class Https {
     }
 }
 exports.Https = Https;
+Https.Headers = null;
