@@ -70,13 +70,17 @@ class Https {
     Builder(messageErrorSuccess, functionsCalculeUpload) {
         return __awaiter(this, void 0, void 0, function* () {
             const pathServer = this.RouterPrivate === undefined ? Https.RouterPrivateGlobal : this.RouterPrivate;
+            let otherHeaders = {};
+            if (Https.Headers != undefined) {
+                otherHeaders = Https.Headers();
+            }
             try {
                 const token = Https.Authorization();
                 const result = (yield (0, axios_1.default)({
                     url: `${pathServer}${this.Path}`,
                     method: this.Method,
                     data: this.Body,
-                    headers: Object.assign({ authorization: `Bearer ${token}` }, Https.Headers === null ? {} : Https.Headers)
+                    headers: Object.assign({ authorization: `Bearer ${token}` }, otherHeaders)
                 })).data;
                 if (!result.hasOwnProperty('service')) {
                     if (messageErrorSuccess != undefined) {
@@ -98,4 +102,3 @@ class Https {
     }
 }
 exports.Https = Https;
-Https.Headers = null;

@@ -20,7 +20,7 @@ export class Https {
     private static Authorization: () => string
     private static RouterPrivateGlobal: string;
     private static FunctionMessageError: (messageError: MessageError) => void
-    private static Headers: Object = null as any
+    private static Headers: Function;
 
     public constructor(routerPrive?: string) {
         this.RouterPrivate = routerPrive as string
@@ -29,7 +29,9 @@ export class Https {
         this.Body = null as any
     }
 
-    public static config(data: { router: string, auth?: () => string, functionError: (messageError: MessageError) => void, headers?: Object }) {
+    public static config(data: { 
+        router: string, auth?: () => string, functionError: (messageError: MessageError) => void, headers?: () => Object 
+    }) {
         Https.RouterPrivateGlobal = data.router
         if(data.auth != undefined) {
             Https.Authorization = data.auth
@@ -79,6 +81,10 @@ export class Https {
         functionsCalculeUpload?: (percentage: number) => void
     ): Promise<T> {
         const pathServer = this.RouterPrivate === undefined ? Https.RouterPrivateGlobal:this.RouterPrivate
+        let otherHeaders = {}
+        if(Https.Headers != undefined) {
+            otherHeaders = Https.Headers()
+        }
         try {
             const token = Https.Authorization()
             const result = (await axios({
@@ -87,7 +93,7 @@ export class Https {
                 data: this.Body,
                 headers: { 
                     authorization: `Bearer ${token}`,
-                    ... Https.Headers === null ? {}: Https.Headers as {}
+                    ... otherHeaders
                  }
             })).data
 
